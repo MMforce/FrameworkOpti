@@ -7,7 +7,7 @@ inicio = time.time()
 process = psutil.Process()
 # Definición de los datos del problema de manera aleatoria
 random.seed(0)  # Para reproducibilidad, puedes cambiar la semilla
-num_nodos = 30  # Número de nodos, puedes cambiarlo
+num_nodos = 30  # Para repetir experimento
 nodos = list(range(1, num_nodos + 1))
 capacidad = 20
 demanda = {i: random.randint(1, 5) for i in nodos}
