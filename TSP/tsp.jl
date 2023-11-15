@@ -16,7 +16,7 @@ function generar_grafo(num_ciudades, distancia_minima, distancia_maxima)
 end
 
 function tsp(num_ciudades)
-    Random.seed!(42)  # Fijar la semilla para realizar el mismo experimento
+    Random.seed!(42)  #Fijar la semilla para realizar el mismo experimento
 
     distancia_minima = 1
     distancia_maxima = Int((num_ciudades * (num_ciudades - 1)) / 2)
@@ -26,7 +26,7 @@ function tsp(num_ciudades)
     ciudades_visitadas = falses(num_ciudades)
     ruta_optima = Int[]
 
-    ciudad_actual = 1  # Ciudad de partida
+    ciudad_actual = 1  #Ciudad de partida
 
     while length(ruta_optima) < num_ciudades
         ciudades_visitadas[ciudad_actual] = true
@@ -45,31 +45,31 @@ function tsp(num_ciudades)
         ciudad_actual = ciudad_mas_cercana
     end
 
-    push!(ruta_optima, 1)  # Agregar la ciudad de partida al final para completar el ciclo
+    push!(ruta_optima, 1)  #Agregar la ciudad de partida al final para completar el ciclo
     
     return ruta_optima
 end
 
-# Almacenar datos en listas
+#Almacenar datos en listas
 tiempos_ejecucion = Float64[]
 ram_utilizada_mb = Float64[]
 
-# Medir el tiempo de ejecución para diferentes números de ciudades
+#Medir el tiempo de ejecución para diferentes números de ciudades
 for num_ciudades in 3:30
     #println("Número de ciudades:", num_ciudades)
     
-    # Medir el tiempo de ejecución
+    #Medir el tiempo de ejecución
     tiempo = @elapsed begin
         tsp(num_ciudades)
     end
     push!(tiempos_ejecucion, tiempo)
     
-    # Medir la RAM utilizada
+    #Medir la RAM utilizada
     #ram = Sys.free_memory() / 1024^2
     #push!(ram_utilizada_mb, ram)
 end
 
-# Imprimir la lista con los datos resultantes
+#Imprimir la lista con los datos resultantes
 println("Tiempos de ejecución (segundos):")
 for tiempo in tiempos_ejecucion
     @printf("%.6f\n", tiempo)
