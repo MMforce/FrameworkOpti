@@ -16,7 +16,7 @@ function generar_grafo(num_ciudades, distancia_minima, distancia_maxima)
 end
 
 function tsp(num_ciudades)
-    Random.seed!(42)  #Fijar la semilla para realizar el mismo experimento
+    Random.seed!(42)  
 
     distancia_minima = 1
     distancia_maxima = Int((num_ciudades * (num_ciudades - 1)) / 2)
