@@ -6,35 +6,35 @@ import time
 inicio = time.time()
 process = psutil.Process()
 random.seed(0) 
-# Número de elementos (objetos)
-num_elementos = 100  # Ejemplo: 10 elementos
+#Número de elementos (objetos)
+num_elementos = 100
 
-# Peso máximo permitido
-PESOMAX = 100  # Ejemplo: Peso máximo permitido
+#Peso máximo permitido
+PESOMAX = 100 
 
-# Generar valores y pesos aleatorios para cada elemento
+#Generar valores y pesos aleatorios para cada elemento
 VALOR = {i: random.randint(1, 20) for i in range(1, num_elementos + 1)}
 PESO = {i: random.randint(1, 10) for i in range(1, num_elementos + 1)}
 
-# Conjunto que indica el rango para cada elemento
+#Conjunto que indica el rango para cada elemento
 ELEMENTOS = range(1, num_elementos + 1)
 
-# Crea un problema de optimización de maximización
+#Crea un problema de optimización de maximización
 prob = pulp.LpProblem("Knapsack", pulp.LpMaximize)
 
-# Variable binaria que indica si el objeto es tomado o no
+#Variable binaria que indica si el objeto es tomado o no
 take = pulp.LpVariable.dicts("Take", ELEMENTOS, cat=pulp.LpBinary)
 
-# Función objetivo que maximiza el valor total de objetos
+#Función objetivo que maximiza el valor total de objetos
 prob += pulp.lpSum(VALOR[i] * take[i] for i in ELEMENTOS)
 
-# Restricción de peso
+#Restricción de peso
 prob += pulp.lpSum(PESO[i] * take[i] for i in ELEMENTOS) <= PESOMAX
 
-# Resuelve el problema
+#Resuelve el problema
 prob.solve()
 
-# Imprime el resultado
+#Imprime el resultado
 if pulp.LpStatus[prob.status] == "Optimal":
     print("Solución óptima encontrada:")
     for i in ELEMENTOS:
