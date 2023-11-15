@@ -17,24 +17,24 @@ def generar_grafo(num_ciudades, distancia_minima, distancia_maxima):
 
 def resolver_tsp(num_ciudades, grafo):
     try:
-        # Crear modelo
+        #Crear modelo
         modelo = gp.Model("TSP")
 
-        # Crear variables binarias para representar si se visita cada ciudad
+        #Crear variables binarias para representar si se visita cada ciudad
         visitar = {}
         for i in range(num_ciudades):
             for j in range(num_ciudades):
                 if i != j:
                     visitar[i, j] = modelo.addVar(vtype=GRB.BINARY, name=f"visitar_{i}_{j}")
 
-        # Función objetivo: minimizar la distancia total
+        #Función objetivo: minimizar la distancia total
         modelo.setObjective(gp.quicksum(grafo[i][j] * visitar[i, j] for i in range(num_ciudades) for j in range(num_ciudades) if i != j), GRB.MINIMIZE)
 
-        # Restricciones: cada ciudad debe ser visitada exactamente una vez
+        #Restricciones: cada ciudad debe ser visitada exactamente una vez
         for i in range(num_ciudades):
             modelo.addConstr(gp.quicksum(visitar[i, j] for j in range(num_ciudades) if i != j) == 1)
 
-        # Restricciones: no se pueden hacer subciclos
+        #Restricciones: no se pueden hacer subciclos
         subciclo = {}
         for i in range(num_ciudades):
             for j in range(num_ciudades):
@@ -46,7 +46,7 @@ def resolver_tsp(num_ciudades, grafo):
                 if i != j:
                     modelo.addConstr(subciclo[i, j] >= visitar[i, j] + 1 - (num_ciudades - 1) * (1 - visitar[i, j]))
 
-        # Resolver el modelo
+        #Resolver el modelo
         modelo.optimize()
 
         if modelo.status == GRB.OPTIMAL:
