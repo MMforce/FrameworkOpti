@@ -6,7 +6,7 @@ using JuMP
 using GLPK
 using Printf
 
-# Esta función resuelve el problema Knapsack y devuelve el tiempo de ejecución
+#Esta función resuelve el problema Knapsack y devuelve el tiempo de ejecución
 function resolver_knapsack(num_elementos)
     PESOMAX = 100
     VALOR = Dict(i => rand(1:20) for i in 1:num_elementos)
@@ -22,7 +22,7 @@ function resolver_knapsack(num_elementos)
     return time
 end
 
-# Almacena los tiempos para diferentes números de elementos
+#Almacena los tiempos para diferentes números de elementos
 tiempos = Dict()
 
 for num_elementos in 10:10:100
@@ -30,7 +30,7 @@ for num_elementos in 10:10:100
     tiempos[num_elementos] = tiempo_ejecucion
 end
 
-# Imprime los tiempos almacenados
+#Imprime los tiempos almacenados
 for (num_elementos, tiempo) in tiempos
     
     println("Elementos: $num_elementos - Tiempo: $tiempo segundos")
