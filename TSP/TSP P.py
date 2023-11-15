@@ -14,7 +14,7 @@ def generar_grafo(num_ciudades, distancia_minima, distancia_maxima):
     return grafo
 
 def main():
-    random.seed(42)  # Fijar la semilla para realizar mismo experimento
+    random.seed(42) 
 
     num_ciudades = 30
     distancia_minima = 1
@@ -25,7 +25,7 @@ def main():
 
     ciudades_visitadas = [False] * num_ciudades
     ruta_optima = []
-    ciudad_actual = 0  # Ciudad de partida
+    ciudad_actual = 0  #Ciudad de partida
 
     while len(ruta_optima) < num_ciudades:
         ciudades_visitadas[ciudad_actual] = True
@@ -41,7 +41,7 @@ def main():
 
         ciudad_actual = ciudad_mas_cercana
 
-    ruta_optima.append(0)  # Agregar la ciudad de partida al final para completar el ciclo
+    ruta_optima.append(0)  #Agregar la ciudad de partida al final para completar el ciclo
     
     #Obtencion de resultados
     
