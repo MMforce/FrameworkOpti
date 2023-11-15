@@ -1,6 +1,4 @@
 using Pkg
-
-# Asegúrate de tener las librerías necesarias instaladas
 #Pkg.add("JuMP")
 #Pkg.add("GLPK")
 
