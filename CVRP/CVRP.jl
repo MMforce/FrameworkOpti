@@ -7,33 +7,33 @@ using GLPK
 using Cbc
 using Random
 
-# Función para ejecutar el modelo y almacenar datos
+#Función para ejecutar el modelo y almacenar datos
 function ejecutar_modelo(num_nodos, resultados)
-    # Definición de los datos del problema de manera aleatoria
-    Random.seed!(0)  # Para repetir el experimento
+    #Definición de los datos del problema de manera aleatoria
+    Random.seed!(0)  #Para repetir el experimento
     nodos = 1:num_nodos
     capacidad = 20
     demanda = Dict(i => rand(1:5) for i in nodos)
     distancia = Dict(i => Dict(j => rand(1:10) for j in nodos) for i in nodos)
 
-    # Creación del modelo de optimización
+    #Creación del modelo de optimización
     model = Model(optimizer_with_attributes(GLPK.Optimizer))
 
-    # Variables de decisión
+    #Variables de decisión
     @variable(model, x[i in nodos, j in nodos], Bin)
     @variable(model, u[i in nodos] >= 0)
 
-    # Función objetivo: Minimizar la distancia total
+    #Función objetivo: Minimizar la distancia total
     @objective(model, Min, sum(distancia[i][j] * x[i, j] for i in nodos, j in nodos))
 
-    # Restricciones
+    #Restricciones
     for i in nodos
         @constraint(model, sum(x[i, j] for j in nodos if j != i) == 1)  # Cada nodo se visita exactamente una vez
         @constraint(model, sum(demanda[j] * x[j, i] for j in nodos if j != i) <= u[i])  # Capacidad de los vehículos
         @constraint(model, u[i] <= capacidad)  # Capacidad máxima de los vehículos
     end
 
-    # Evitar subrutas
+    #Evitar subrutas
     for i in nodos
         for j in nodos
             if i != j && i != 1 && j != 1
@@ -42,21 +42,21 @@ function ejecutar_modelo(num_nodos, resultados)
         end
     end
 
-    # Medir el tiempo y la RAM
+    #Medir el tiempo y la RAM
     tiempo_inicio = time()
     ram_inicio = Sys.total_memory()
 
-    # Resolver el problema
+    #Resolver el problema
     optimize!(model)
 
-    # Medir el tiempo y la RAM al final
+    #Medir el tiempo y la RAM al final
     tiempo_fin = time() - tiempo_inicio
     ram_fin = Sys.total_memory() - ram_inicio
 
-    # Almacenar resultados
+    #Almacenar resultados
     push!(resultados, (num_nodos = num_nodos, tiempo = tiempo_fin, ram = ram_fin))
 
-    # Mostrar la solución
+    #Mostrar la solución
     if termination_status(model) == MOI.OPTIMAL
         #println("Distancia total mínima:", objective_value(model))
         for i in nodos
@@ -73,16 +73,16 @@ function ejecutar_modelo(num_nodos, resultados)
     end
 end
 
-# Almacenar resultados en una lista
+#Almacenar resultados en una lista
 resultados = []
 
-# Ejecutar el modelo para diferentes valores de num_nodos
+#Ejecutar el modelo para diferentes valores de num_nodos
 for num_nodos in 3:30
     #println("\nEjecutando modelo con ", num_nodos, " nodos.")
     ejecutar_modelo(num_nodos, resultados)
 end
 
-# Imprimir resultados ordenados
+#Imprimir resultados ordenados
 println("\nResultados:")
 for resultado in resultados
     println("Nodos: ", resultado.num_nodos, ", Tiempo: ", resultado.tiempo, " segundos, RAM: ", resultado.ram / 2^20, " MB")
